@@ -1,4 +1,7 @@
+import java.io.File;
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -19,7 +22,15 @@ public class App {
         var parser = new JsonParser();
         List<Map<String, String>> movieList = parser.parse(body);
 
+        var stickersDir = "output/";
+        new File(stickersDir).mkdir();
+
+        var generator = new StickerGenerator();
         for (Map<String, String> movie : movieList) {
+            InputStream inputStream = new URL(movie.get("image")).openStream();
+            var fileName = stickersDir + movie.get("title") + ".png";            
+            generator.create(inputStream, fileName);
+
             printAttr("Título", movie.get("title"), false);
             printAttr("Poster", movie.get("image"), false);
             printAttr("Classificação", movie.get("imDbRating"), true);
