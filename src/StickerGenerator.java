@@ -53,5 +53,4 @@ public class StickerGenerator {
 
         ImageIO.write(newImg, "png", new File(fileName));
     }
-
 }
